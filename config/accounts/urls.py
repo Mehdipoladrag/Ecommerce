@@ -4,5 +4,5 @@ app_name = 'accounts'
 
 urlpatterns = [
   path('register/', UserRegisterView.as_view(), name='user_register'),
-    path('verify/', UserRegisterVerifyCode.as_view(), name='verify_code'),
+  path('verify/', UserRegisterVerifyCode.as_view(), name='verify_code'),
 ]
