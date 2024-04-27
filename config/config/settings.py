@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 
+    #
     'home', 'accounts',
 ]
 
@@ -69,7 +69,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# UserModel 
+# UserModel
 AUTH_USER_MODEL = 'accounts.User'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -124,3 +124,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Cloud Arvan
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+AWS_S3_ACCESS_KEY_ID = "ACCESS_KEY_ID"
+AWS_S3_SECRET_ACCESS_KEY = "SECRET_ACCESS_KEY"
+AWS_S3_ENDPOINT_URL = "ENDPOINT_URL"
+AWS_STORAGE_BUCKET_NAME = "BUCKET_NAME"
+AWS_SERVICE_NAME = "s3"
+AWS_S3_FILE_OVERWRITE = False
