@@ -13,5 +13,5 @@ celery_app.conf.task_serializer = 'json'
 celery_app.conf.result_serializer = 'pickle'
 celery_app.conf.accept_content = ['json', 'pickle']
 celery_app.conf.result_expires = timedelta(days=1) # Expires Tasks
-celery_app.conf.tasks.always_eager = False
+#celery_app.conf.tasks.always_eager = False
 celery_app.conf.worker_prefetch_multiplier = 4

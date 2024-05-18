@@ -3,11 +3,14 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from accounts.models import OtpCode, User
-from accounts.forms import UserRegistrationForm,VerifyCodeForm
+from accounts.forms import UserRegistrationForm,VerifyCodeForm, UserLoginForm
+from django.contrib.auth import login, logout, authenticate
 import random
 from utils import send_otp_code
 from django.contrib import messages
 # Create your views here.
+
+# UserRegisterView
 class UserRegisterView(View) :
   form_class = UserRegistrationForm
   template_name = 'accounts/register.html'
@@ -32,6 +35,8 @@ class UserRegisterView(View) :
       return redirect('accounts:verify_code')
     return render(request, self.template_name, {'form' : form})
 
+
+# UserRegisterVerifyCode
 class UserRegisterVerifyCode(View) :
   form_class = VerifyCodeForm
   template_name = 'accounts/verify.html'
@@ -53,4 +58,32 @@ class UserRegisterVerifyCode(View) :
       else :
         messages.error(request, 'this code is wrong', 'danger')
         return redirect('accounts:verify_code')
+    return redirect('home:home')
+  
+# UserLoginView
+class UserLoginView(View): 
+  form_class = UserLoginForm
+  template_name = "accounts/login.html"
+  
+  def get(self, request) : 
+    form = self.form_class
+    return render(request, self.template_name, {'form':form})
+  
+  def post(self, request): 
+    form = self.form_class(request.POST)
+    if form.is_valid(): 
+      cd = form.cleaned_data
+      user = authenticate(request, phone_number=cd['phone'], password=cd['password'])
+      if user is not None : 
+        login(request, user)
+        messages.success(request, 'login Successfully' 'success')
+        return redirect('home:home')
+      messages.error(request, 'phone or password is wrong', 'danger')
+    return render(request, self.template_name, {'form':form})
+  
+# UserLogOutView
+class UserLogOutView(View) : 
+  def get(self, request): 
+    logout(request)
+    messages.success(request, 'you logout', 'success')
     return redirect('home:home')
