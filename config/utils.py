@@ -1,6 +1,6 @@
 from kavenegar import *
 import ghasedakpack
-
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 def send_otp_code(phone_number, code):
     api_key = "API KEY"
@@ -25,16 +25,6 @@ def send_otp_code(phone_number, code):
 
 
 
-# try:
-    #     api = KavenegarAPI('API KEY')
-    #     params = {
-    #         'sender': '',  # optional, specify if needed
-    #         'receptor': phone_number,
-    #         'message': f'کد تایید شما: {code}',
-    #     }
-    #     response = api.sms_send(params)
-    #     print(response)
-    # except APIException as e:
-    #     print(f"Kavenegar API Exception: {e}")
-    # except HTTPException as e:
-    #     print(f"HTTP Exception: {e}")
+class IsAdminUserMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_admin
