@@ -22,7 +22,7 @@ class User(AbstractBaseUser) :
   def has_perm(self, perm, obj=None):
     return True
   
-  def has_module_perms(self, app_label) : 
+  def has_module_perms(self, app_label) :
     return True
   
   @property
@@ -31,7 +31,7 @@ class User(AbstractBaseUser) :
 
 
 class OtpCode(models.Model) : # one Time password
-  phone_number = models.CharField(max_length=11)
+  phone_number = models.CharField(max_length=11, unique=True)
   code = models.PositiveSmallIntegerField()
   created = models.DateTimeField(auto_now=True)
 
