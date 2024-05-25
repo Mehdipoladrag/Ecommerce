@@ -4,17 +4,21 @@ from .models import Product
 from . import tasks
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
-
 from utils import IsAdminUserMixin
-
+from .models import Category
 
 # Create your views here.
 
 class HomeView(View):
-    def get(self, request):
+    def get(self, request, category_slug=None):
         products = Product.objects.filter(available=True)
+        categories = Category.objects.all()
+        if category_slug:
+            category = Category.objects.get(slug=category_slug)
+            products = products.filter(category=category)
         context = {
-            'products': products
+            'products': products,
+            'categories': categories
         }
         return render(request, 'home/home.html', context)
 
