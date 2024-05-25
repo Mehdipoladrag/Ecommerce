@@ -1,8 +1,18 @@
 # Ecommerce
 
-## Project setup
+## Run and Install Project in Docker 
 ```
-django-admin startproject projname
+docker-compose up -d --build
+```
+
+## Create Container
+```
+docker-compose up -d 
+```
+
+## Remove Container
+```
+docker-compose down
 ```
 
 ## Create App
@@ -20,25 +30,12 @@ python manage.py runserver
 python manage.py migrate
 ```
 
-### Check Error
-```
-python manage.py check
-```
 
 ### Create SuperUser
 ```
 python manage.py createsuperuser
 ```
 
-### Install Packages
-```
-pip install -r requirenments.txt   
-```
-
-### Install New Package
-```
-pip install PackageName
-```
 
 
 
