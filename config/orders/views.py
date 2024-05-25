@@ -11,7 +11,7 @@ from home.models import Product
 class CartView(View):
     def get(self, request):
         cart = Cart(request)
-        return render(request, 'orders/cart.html', {'cart':cart})
+        return render(request, 'orders/cart.html', {'cart': cart})
 
 
 class CartAddView(View):

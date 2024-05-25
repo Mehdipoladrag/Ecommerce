@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from .models import Product
-from . import tasks
+#from . import tasks
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
 from utils import IsAdminUserMixin
@@ -38,8 +38,8 @@ class BucketHome(IsAdminUserMixin, View):
     template_name = 'home/bucket.html'
 
     def get(self, request):
-        objects = tasks.all_bucket_objects_task()
-        return render(request, self.template_name, {'objects':objects})
+       # objects = tasks.all_bucket_objects_task()
+        return render(request, self.template_name)
 
 
 class DeleteBucketObject(IsAdminUserMixin, View):
