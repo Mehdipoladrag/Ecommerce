@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  web:
+    image: django_config_proj
+    container_name: django_config_proj
+    build:
+      dockerfile: Dockerfile
+      context: ./config
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./config:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=django-insecure-beuu&e-)-p3cluy@f8ebcg^ye8s9f5#-83g6t7^g8_mltzdb+0
+      - DEBUG=True
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: my_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+  celery:
+    container_name: celery_project
+    build:
+      context: ./config
+      dockerfile: Dockerfile
+    command: celery -A config worker -l INFO
+    volumes:
+      - ./config:/app/
+    environment:
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-beuu&e-)-p3cluy@f8ebcg^ye8s9f5#-83g6t7^g8_mltzdb+0
+      - C_FORCE_ROOT=True
+    depends_on:
+      - web
+      - rabbitmq
+  celery-beat:
+    container_name: celery_beat_project
+    build:
+      context: ./config
+      dockerfile: Dockerfile
+    command: celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - ./config:/app/
+    environment:
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-beuu&e-)-p3cluy@f8ebcg^ye8s9f5#-83g6t7^g8_mltzdb+0
+      - C_FORCE_ROOT=True
+    depends_on:
+      - web
+      - rabbitmq
+  flower:
+    image: mher/flower
+    ports:
+      - "4445:5555"
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672/

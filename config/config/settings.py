@@ -14,17 +14,18 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+import os
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-beuu&e-)-p3cluy@f8ebcg^ye8s9f5#-83g6t7^g8_mltzdb+0'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-beuu&e-)-p3cluy@f8ebcg^ye8s9f5#-83g6t7^g8_mltzdb+0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(',')
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -126,6 +127,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'
 
 # Cloud Arvan
 
