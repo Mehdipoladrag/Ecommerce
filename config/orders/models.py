@@ -8,7 +8,7 @@ from home.models import Product
 
 class Order(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='orders')
-    paid = models.BooleanField()
+    paid = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -16,10 +16,10 @@ class Order(models.Model):
         ordering = ('paid', '-updated')
 
     def __str__(self):
-        return f'{self.user} - {self.id}'
+        return f'{self.user} - {str(self.id)}'
 
     def get_total_price(self):
-        return sum(item.get_cost() for item in self.itms.all()) # items is a related name in OrderItem
+        return sum(item.get_cost() for item in self.items.all()) # items is a related name in OrderItem
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
@@ -28,7 +28,7 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     def get_cost(self):
         return self.price * self.quantity
